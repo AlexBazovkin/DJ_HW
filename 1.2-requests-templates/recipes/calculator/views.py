@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+
+
 DATA = {
     'omlet': {
         'яйца, шт': 2,
@@ -28,3 +30,12 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+
+
+def recipes(request, recipe):
+    recipe_list = {}
+    servings = int(request.GET.get('servings', 1))
+    for ingredient, amount in DATA[recipe].items():
+        recipe_list[ingredient] = round(amount * servings, 2)
+    context = {'recipe': recipe_list}
+    return render(request, 'calculator/index.html', context)
